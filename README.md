@@ -1,51 +1,77 @@
 <!---
 {
-  "depends_on": [],
-  "author": "Stephan Bökelmann",
-  "first_used": "2025-03-17",
-  "keywords": ["learning", "exercises", "education", "practice"]
+  "depends_on": ["https://github.com/STEMgraph/2f4d1f4f-a53b-485e-a290-2da6b69353b2"],
+  "author": ["Tabea Röthemeyer","Stephan Bökelmann"],
+  "first_used": "2025-04-12",
+  "keywords": ["git", "stash", "context-switch"]
 }
 --->
 
-# Learning Through Exercises
+# Git: Context Switching with `git stash`
 
 ## 1) Introduction
-Learning by doing is one of the most effective methods to acquire new knowledge and skills. Rather than passively consuming information, actively engaging in problem-solving fosters deeper understanding and long-term retention. By working through structured exercises, students can grasp complex concepts in a more intuitive and applicable way. This approach is particularly beneficial in technical fields like programming, mathematics, and engineering.
+In the everyday work of a programmer, it's common to be interrupted or to want to switch context. Maybe you're halfway through implementing a new feature when a bug report comes in and you must fix it on the main branch. But your current work is not finished yet and can't be committed. What now?
+
+That's where `git stash` comes into play. It allows you to save (or *stash*) your current changes away, return to a clean working directory, and restore them later when you're ready.
+
+The command `git stash` creates a temporary, hidden commit with the current changes in your working directory and staging area. When you’re ready to return to your work, `git stash pop` restores those changes and removes them from the stash list.
+
+You can think of it as a clipboard for unfinished work — not permanent, but very handy!
 
 ### 1.1) Further Readings and Other Sources
-- [The Importance of Practice in Learning](https://www.sciencedirect.com/science/article/pii/S036013151300062X)
-- "The Art of Learning" by Josh Waitzkin
-- [How to Learn Effectively: 5 Key Strategies](https://www.edutopia.org/article/5-research-backed-learning-strategies)
+- [Git Stash in the official documentation](https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning)
+- YouTube: [Git Stash Explained](https://www.youtube.com/watch?v=KLEDKgMmbBI)
 
 ## 2) Tasks
-1. **Write a Summary**: Summarize the concept of "learning by doing" in 3-5 sentences.
-2. **Example Identification**: List three examples from your own experience where learning through exercises helped you understand a topic better.
-3. **Create an Exercise**: Design a simple exercise for a topic of your choice that someone else could use to practice.
-4. **Follow an Exercise**: Find an online tutorial that includes exercises and complete at least two of them.
-5. **Modify an Existing Exercise**: Take a basic problem from a textbook or online course and modify it to make it slightly more challenging.
-6. **Pair Learning**: Explain a concept to a partner and guide them through an exercise without giving direct answers.
-7. **Review Mistakes**: Look at an exercise you've previously completed incorrectly. Identify why the mistake happened and how to prevent it in the future.
-8. **Time Challenge**: Set a timer for 10 minutes and try to solve as many simple exercises as possible on a given topic.
-9. **Self-Assessment**: Create a checklist to evaluate your own performance in completing exercises effectively.
-10. **Reflect on Progress**: Write a short paragraph on how this structured approach to exercises has influenced your learning.
+1. **Create a new Git repository**: As always, start fresh. Open a terminal, go to your home directory (`cd`), create a new directory and initialize a Git repository there.
+2. **Create a new file and make a commit**: Add some dummy text to a file named `notes.txt`. Use the following command if you want to fill it quickly:
+```sh
+wget -qO- "https://baconipsum.com/api/?type=meat-and-filler&paras=2&format=text" > notes.txt
+```
+Stage and commit the file.
 
-<details>
-  <summary>Tip for Task 5</summary>
-  Try making small adjustments first, such as increasing the difficulty slightly or adding an extra constraint.
-</details>
+3. **Make changes without committing**: Open `notes.txt` and change a few lines. Do **not** commit them yet. Just save the file.
+4. **Check Git status**: Confirm that your working directory has changes with:
+```sh
+git status
+```
+It should show the modified file.
+
+5. **Stash your changes**: Now save your current work using:
+```sh
+git stash
+```
+This command will save the changes and revert your working directory to the last commit.
+
+6. **Inspect your stash**: Run `git stash list` to see what was stashed. Use:
+```sh
+git stash show -p
+```
+to see the differences stored in your latest stash.
+
+7. **Switch branches**: Create and switch to a new branch where you could theoretically fix some bug:
+```sh
+git checkout -b bugfix
+```
+Make some unrelated change (e.g., add a new file or log your fix in `bugfix.txt`) and commit it.
+
+8. **Return to your original work**: Switch back to the default branch. Use `git stash pop` to retrieve your previously stashed changes:
+```sh
+git checkout main
+git stash pop
+```
+Inspect `notes.txt` and confirm that your old work is back. 
+
+9. **Stash with a message** *(Optional)*: Try this variant:
+```sh
+git stash push -m "WIP: editing notes.txt"
+```
+This way, it becomes easier to know what the stash contains later.
 
 ## 3) Questions
-1. What are the main benefits of learning through exercises compared to passive learning?
-2. How do exercises improve long-term retention?
-3. Can you think of a subject where learning through exercises might be less effective? Why?
-4. What role does feedback play in learning through exercises?
-5. How can self-designed exercises improve understanding?
-6. Why is it beneficial to review past mistakes in exercises?
-7. How does explaining a concept to someone else reinforce your own understanding?
-8. What strategies can you use to stay motivated when practicing with exercises?
-9. How can timed challenges contribute to learning efficiency?
-10. How do exercises help bridge the gap between theory and practical application?
+1. What happens if you have multiple stashes? How can you reapply a specific one?
+2. What is the difference between `git stash pop` and `git stash apply`?
+3. Can you stash untracked files? What about ignored files? Try it and find out!
 
 ## 4) Advice
-Practice consistently and seek out diverse exercises that challenge different aspects of a topic. Combine exercises with reflection and feedback to maximize your learning efficiency. Don't hesitate to adapt exercises to fit your own needs and ensure that you're actively engaging with the material, rather than just going through the motions.
-
+`git stash` is not a replacement for commits. It’s meant for temporary work, like pausing a task to fix something urgent. It’s a perfect tool for switching tasks, experimenting, or cleaning up your workspace without losing progress. Keep in mind that stashes can be lost if not handled with care — they are not as permanent as commits and can be dropped accidentally. Always check `git stash list` before you trust it’s still there!
