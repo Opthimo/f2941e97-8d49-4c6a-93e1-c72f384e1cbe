@@ -70,8 +70,18 @@ This way, it becomes easier to know what the stash contains later.
 
 ## 3) Questions
 1. What happens if you have multiple stashes? How can you reapply a specific one?
+
+Die stashs sind numeriert und mit apply, zum Beispiel git stash applay stash{2} kann man sie wieder anwednen.
+
 2. What is the difference between `git stash pop` and `git stash apply`?
+
+pop - wendet ihn an und löscht ihn
+applay - wendet ihn an und behält ihn bei
+
 3. Can you stash untracked files? What about ignored files? Try it and find out!
+
+You can stash untracked filed by adding "-u" e.g.: git stash push -u or "--include-untracked"
+
 
 ## 4) Advice
 `git stash` is not a replacement for commits. It’s meant for temporary work, like pausing a task to fix something urgent. It’s a perfect tool for switching tasks, experimenting, or cleaning up your workspace without losing progress. Keep in mind that stashes can be lost if not handled with care — they are not as permanent as commits and can be dropped accidentally. Always check `git stash list` before you trust it’s still there!
